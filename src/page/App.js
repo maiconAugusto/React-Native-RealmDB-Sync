@@ -8,6 +8,8 @@ import {
   Text,
   StyleSheet,
   TextInput,
+  ActivityIndicator,
+  StatusBar,
 } from 'react-native';
 import {Icon, Overlay} from 'react-native-elements';
 import {ObjectId} from 'bson';
@@ -22,6 +24,7 @@ const App = () => {
   const [data, setData] = useState([]);
   const [name, setName] = useState('');
   const [language, setLanguage] = useState();
+  const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -44,9 +47,11 @@ const App = () => {
     const realm = await Realm.open(config);
     const response = realm.objects('Dev');
     setData(response);
+    setLoading(false);
   }
 
   async function Login() {
+    setLoading(true);
     const creds = Realm.Credentials.anonymous();
     const _newUser = await app.logIn(creds);
     setNewUser(_newUser);
@@ -135,41 +140,51 @@ const App = () => {
 
   return (
     <View style={style.container}>
+      <StatusBar barStyle="light-content" backgroundColor="#978FF2" />
       {renderOverlay()}
       <View style={{display: 'flex', flex: 1}}>
-        <FlatList
-          style={{marginTop: 30}}
-          data={data}
-          extraData={data}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({item, index}) => {
-            return (
-              <View key={item._id} style={style.containerItem}>
-                <View>
-                  <Icon
-                    color="#484848"
-                    size={30}
-                    containerStyle={{marginLeft: 10}}
-                    name="person"
-                  />
+        {loading ? (
+          <View
+            style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
+            <ActivityIndicator size="large" color="white" />
+          </View>
+        ) : (
+          <FlatList
+            style={{marginTop: 30}}
+            data={data}
+            extraData={data}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({item, index}) => {
+              return (
+                <View key={item._id} style={style.containerItem}>
+                  <View>
+                    <Icon
+                      color="#484848"
+                      size={30}
+                      containerStyle={{marginLeft: 10}}
+                      name="person"
+                    />
+                  </View>
+                  <View style={style.column}>
+                    <Text style={style.textItem}>Nome: {item.name}</Text>
+                    <Text style={style.textItem}>
+                      Linguagem: {item.language}
+                    </Text>
+                  </View>
+                  <View>
+                    <Icon
+                      onPress={() => remove(item._id)}
+                      color="#FF5E61"
+                      size={30}
+                      containerStyle={{marginRight: 10}}
+                      name="delete"
+                    />
+                  </View>
                 </View>
-                <View style={style.column}>
-                  <Text style={style.textItem}>Nome: {item.name}</Text>
-                  <Text style={style.textItem}>Linguagem: {item.language}</Text>
-                </View>
-                <View>
-                  <Icon
-                    onPress={() => remove(item._id)}
-                    color="#FF5E61"
-                    size={30}
-                    containerStyle={{marginRight: 10}}
-                    name="delete"
-                  />
-                </View>
-              </View>
-            );
-          }}
-        />
+              );
+            }}
+          />
+        )}
         <Icon
           containerStyle={{position: 'absolute', bottom: 30, right: 10}}
           size={36}
@@ -240,5 +255,6 @@ const style = StyleSheet.create({
     width: 350,
     justifyContent: 'center',
     display: 'flex',
+    marginTop: 30,
   },
 });
