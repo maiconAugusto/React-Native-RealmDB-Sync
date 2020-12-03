@@ -1,7 +1,7 @@
 import Realm from 'realm';
 
 export function getRealmApp() {
-  const appId = 'app-ercpq'; // Insira seu appId do RealmDB;
+  const appId = '<Seu APPID>'; // Insira seu appId do RealmDB;
   const appConfig = {
     id: appId,
     timeout: 10000,
