@@ -3,12 +3,12 @@
 - Clone o repositório
 - Acesse o projeto, na raiz do projeto  rode o comando yarn ou npm install.
 - Se você não tem um conta no MONGO ATLAS crie uma.
-- Leia a documentação do MongoDB para configurar seus SCHEMAS e habilitar o ReamSync.
+- Leia a documentação do MongoDB para configurar seus SCHEMAS e habilitar o ReamSync
 `<link>` : https://docs.mongodb.com/realm/sync/get-started#std-label-enable-sync
 
 
 
-####Javascript
+#### Javascript
 -  Depois de ter configurado o MONGO ATLAS, copie seu appId  e procure em src/database/instance.js
 
 ```javascript
