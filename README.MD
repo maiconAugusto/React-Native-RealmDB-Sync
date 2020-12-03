@@ -23,5 +23,5 @@ export function getRealmApp() {
   return new Realm.App(appConfig);
 }
 ```
-#### Run :tw-1f44c: 
+#### Run
  Se tudo deu certo até aqui, é só rodar o comando npx react-native run-android para o ANDROID, ou react-native run-ios para o IOs.
